@@ -1,0 +1,27 @@
+[Unit]
+Description=mqtt subscription router service
+After=syslog.target
+After=network.target
+
+[Service]
+SyslogIdentifier=mqtt_energyd
+Type=simple
+#User=dirk
+User=root
+ExecStart=/usr/bin/python3 /opt/mqtt_energyd.py
+WorkingDirectory=/opt/
+#Restart=always
+Restart=on-failure
+RestartSec=60
+CPUWeight=20
+CPUQuota=85%
+
+StartLimitInterval=10
+StartLimitBurst=5
+
+# Give the script some time to startup
+TimeoutSec=120
+
+[Install]
+WantedBy=multi-user.target
+
