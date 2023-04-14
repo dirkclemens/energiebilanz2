@@ -1,11 +1,5 @@
 <?php
     # Obtain the JSON payload from POSTed via HTTP
-    
-    ini_set('date.timezone','Europe/Berlin');
-    // ini_set('display_errors','On');
-    // error_reporting(E_STRICT);
-    // error_reporting(E_ALL & ~E_NOTICE);
-    error_reporting(E_ALL);
 
     header("Content-type: text/plain");
 
@@ -17,7 +11,7 @@
         // echo "$key = " . urldecode($value) . "\n";
         if ($key == "range") $range = $value;
         if ($key == "limit") $limit = $value;
-    }
+    }    
 
     $smarthomedb = '/../smarthome.db';
 
@@ -28,9 +22,11 @@
         // connect to the sqlite database
         $db = new SQLite3($smarthomedb);
     
+        // $results = $db->querySingle($sql);
         $results = $db->query($sql);
         $rows = array();
         while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+            // $rows[] = $row;
             array_push($rows, $row);
         }
         print json_encode($rows);
@@ -38,27 +34,23 @@
     }    
 
     $today = date("Y-m-d");
-    // print($today);
     switch ($range) {
         case 'week':
-            $sql = 'SELECT abs(random()) AS id, substr(TIMESTAMP, 0, 11) AS DT, DAILY AS PV FROM "V_PIKO42_DAILY" ORDER BY TIMESTAMP DESC LIMIT '.$limit.';';
+            $sql = 'SELECT rowid AS id, DATE(MAX(TIMESTAMP)) AS DT, DAILY AS PV FROM PIKO42 GROUP BY DATE(TIMESTAMP) ORDER BY DT DESC LIMIT '.$limit.';';
             break;
         case 'month':
-                $sql = 'SELECT abs(random()) AS id, TIMESTAMP AS DT, MONTH AS PV FROM "PIKO42_MONTH" ORDER BY TIMESTAMP DESC LIMIT '.$limit.';';
+                $sql = 'SELECT rowid AS id, TIMESTAMP AS DT, MONTH AS PV FROM "PIKO42_MONTH" ORDER BY TIMESTAMP DESC LIMIT '.$limit.';';
             break;
         case 'year':
-            $sql = 'SELECT abs(random()) AS id, TIMESTAMP AS DT, YEAR AS PV FROM "PIKO42_YEAR" ORDER BY TIMESTAMP DESC LIMIT '.$limit.';';
+            $sql = 'SELECT rowid AS id, TIMESTAMP AS DT, YEAR AS PV FROM "PIKO42_YEAR" ORDER BY TIMESTAMP DESC LIMIT '.$limit.';';
             break;        
         default:
-            $sql = 'SELECT abs(random()) AS id, TIMESTAMP AS DT, CURRENT AS PV FROM "PIKO42" WHERE "TIMESTAMP" LIKE "%'.$today.'%" ORDER BY "TIMESTAMP" ASC;';
+            $sql = 'SELECT rowid AS id, TIMESTAMP AS DT, CURRENT AS PV FROM "PIKO42" WHERE "TIMESTAMP" LIKE "%'.$today.'%" ORDER BY "TIMESTAMP" ASC;';
             break;
     }
-    // print ($sql);
 
     $response = getSQL($sql);
-    print ($response);
 
     $response_code = 200;
     http_response_code($response_code);
-
 ?>
