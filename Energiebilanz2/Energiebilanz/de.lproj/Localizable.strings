@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  Energiebilanz
+
+  Created by Dirk Clemens on 11.04.23.
+  
+*/
+
+"Erzeugung" = "Erz.";
+"Netzbezug" = "Netzbez.";
+"Einspeisung" = "Einsp.";
+"Verbrauch" = "Verbr.";
+"Ladepunkt" = "Ladep.";
+
+"energiebilanz" = "Energiebilanz";
+"wechselrichter" = "Wechselrichter";
+
+"erzeugung" = "Erzeugung (PV):";
+"netzbezug" = "Netzbezug:";
+"verbrauch" = "Verbrauch:";
+"ladepunkt" = "Ladepunkt:";
+"einspeisung" = "Einspeisung:";
+
+"heute" = "heute";
+"gesamt" = "Gesamt";
+
+"zweirichtungszaehler" = "Zweirichtungszähler";
+"bezug" = "Bezug (1.8.0)";
+"abgabe" = "Abgabe (2.8.0)";
+"momentan" = "Momentan (1.6.7)";
+"ladestation" = "Ladestation";
+
+"reichweite" = "Reichweite";
+"ladung" = "Ladung";
+"laufleistung" = "Laufleistung";
